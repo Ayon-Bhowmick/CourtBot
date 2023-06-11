@@ -7,17 +7,16 @@ import concurrent.futures
 import threading
 import time
 
-MAX_WORKERS = 1
+MAX_WORKERS = 50
 
-def get_cases():
+def get_case_links():
     while len(year_links) > 0:
         link = year_links.pop()
         driver = webdriver.Chrome(options=chrome_options)
         driver.get(link)
-        case_links = driver.find_elements("tag name", "tbody")[3].find_elements("tag name", "a")
-        case_links = [link.get_attribute("href") for link in case_links]
-        print(case_links)
-
+        case_links_year = driver.find_elements("tag name", "tbody")[3].find_elements("tag name", "a")
+        case_links_year = [link.get_attribute("href") for link in case_links_year]
+        case_links.extend(case_links_year)
 
 if __name__ == "__main__":
     chrome_options = webdriver.ChromeOptions()
@@ -25,7 +24,6 @@ if __name__ == "__main__":
     chrome_options.add_argument("log-level=3")
     chrome_options.add_argument("--ignore-certificate-errors")
     chrome_options.add_argument("--ignore-ssl-errors")
-    chrome_options.add_argument("--ignore-certificate-errors-spki-list")
 
     # Get all year links
     driver = webdriver.Chrome(options=chrome_options)
@@ -34,8 +32,12 @@ if __name__ == "__main__":
     year_links = [link.get_attribute("href") for link in year_links]
     driver.quit()
 
-    # get cases in parallel
+    # get case links in parallel
+    case_links = []
     pool = concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS)
-    for i in range(MAX_WORKERS):
-        pool.submit(get_cases)
+    futures = [pool.submit(get_case_links) for _ in range(MAX_WORKERS)]
+
+    concurrent.futures.wait(futures, timeout=None,return_when=concurrent.futures.FIRST_COMPLETED)
+    print(len(case_links))
     pool.shutdown(wait=True)
+    print(len(case_links))
