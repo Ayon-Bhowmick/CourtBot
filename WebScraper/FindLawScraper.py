@@ -66,7 +66,7 @@ if __name__ == "__main__":
     case_links = []
     pool = concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS)
     link_futures = [pool.submit(get_case_links) for _ in range(MAX_WORKERS)]
-    concurrent.futures.wait(link_futures, timeout=None,return_when=concurrent.futures.ALL_COMPLETED)
+    concurrent.futures.wait(link_futures, timeout=None, return_when=concurrent.futures.ALL_COMPLETED)
     print(f"\nyears left: {len(year_links)}\ncases left: {len(case_links)}\n")
 
     # get cases in parallel
@@ -74,8 +74,9 @@ if __name__ == "__main__":
     while len(case_links) > 0:
         jank += 1
         case_futures = [pool.submit(get_case) for _ in range(MAX_WORKERS)]
-        pool.shutdown(wait=True)
+        concurrent.futures.wait(case_futures, timeout=None, return_when=concurrent.futures.ALL_COMPLETED)
         print(f"\ncases left: {len(case_links)}\ncases downloaded: {len(os.listdir('../SupremeCourtCases'))} with jank count {jank}\n")
+    pool.shutdown(wait=True)
 
     seconds = time.time() - start
     minutes = seconds // 60
