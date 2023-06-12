@@ -21,10 +21,10 @@ def get_case_links():
         case_links.extend(case_links_year)
         break
     driver.quit()
+    print(f"finished thread {threading.current_thread().name} for years")
 
 def get_case():
     driver = webdriver.Chrome(options=chrome_options)
-    case_links = ["https://caselaw.findlaw.com/court/us-supreme-court/22-148.html"]
     while len(case_links) > 0:
         link = case_links.pop()
         driver.get(link)
@@ -36,6 +36,7 @@ def get_case():
             f.write("\n".join(body_list[1:]))
         break
     driver.quit()
+    print(f"finished thread {threading.current_thread().name} for cases", len(case_links))
 
 
 if __name__ == "__main__":
@@ -61,3 +62,4 @@ if __name__ == "__main__":
     # get cases in parallel
     case_futures = [pool.submit(get_case) for _ in range(MAX_WORKERS)]
     pool.shutdown(wait=True)
+    print(len(os.listdir("../SupremeCourtCases")))
