@@ -41,6 +41,7 @@ def get_case():
 
 
 if __name__ == "__main__":
+    start = time.time()
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("log-level=3")
@@ -66,3 +67,10 @@ if __name__ == "__main__":
     case_futures = [pool.submit(get_case) for _ in range(MAX_WORKERS)]
     pool.shutdown(wait=True)
     print(f"\ncases left: {len(case_links)} cases downloaded: {os.listdir('../SupremeCourtCases')}\n")
+
+    seconds = time.time() - start
+    minutes = seconds // 60
+    seconds = seconds - minutes * 60
+    hours = minutes // 60
+    minutes = minutes - hours * 60
+    print(f"Total time: {int(hours)}:{int(minutes)}:{seconds}")
