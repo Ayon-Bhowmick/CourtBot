@@ -1,7 +1,4 @@
 from selenium import webdriver
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 import os
 import concurrent.futures
 import threading
@@ -73,9 +70,12 @@ if __name__ == "__main__":
     print(f"\nyears left: {len(year_links)}\ncases left: {len(case_links)}\n")
 
     # get cases in parallel
-    case_futures = [pool.submit(get_case) for _ in range(MAX_WORKERS)]
-    pool.shutdown(wait=True)
-    print(f"\ncases left: {len(case_links)} cases downloaded: {os.listdir('../SupremeCourtCases')}\n")
+    jank = -1
+    while len(case_links) > 0:
+        jank += 1
+        case_futures = [pool.submit(get_case) for _ in range(MAX_WORKERS)]
+        pool.shutdown(wait=True)
+        print(f"\ncases left: {len(case_links)}\ncases downloaded: {len(os.listdir('../SupremeCourtCases'))} with jank count {jank}\n")
 
     seconds = time.time() - start
     minutes = seconds // 60
