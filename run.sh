@@ -12,7 +12,6 @@ while getopts 'sc' OPTIONS; do
         c)
             echo "Cleaning Supreme Court Cases"
             rm -rf SupremeCourtCases
-            mkdir SupremeCourtCases
             ;;
         *) error "Unexpected option ${OPTIONS}" ;;
     esac
