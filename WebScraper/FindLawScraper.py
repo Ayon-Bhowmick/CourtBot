@@ -45,6 +45,7 @@ if __name__ == "__main__":
     chrome_options.add_argument("log-level=3")
     chrome_options.add_argument("--ignore-certificate-errors")
     chrome_options.add_argument("--ignore-ssl-errors")
+    chrome_options.add_argument("--ignore-certificate-errors-spki-list")
 
     # Get all year links
     driver = webdriver.Chrome(options=chrome_options)
@@ -57,7 +58,7 @@ if __name__ == "__main__":
     case_links = []
     pool = concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS)
     link_futures = [pool.submit(get_case_links) for _ in range(MAX_WORKERS)]
-    concurrent.futures.wait(link_futures, timeout=None,return_when=concurrent.futures.FIRST_COMPLETED)
+    concurrent.futures.wait(link_futures, timeout=None,return_when=concurrent.futures.ALL_COMPLETED)
 
     # get cases in parallel
     case_futures = [pool.submit(get_case) for _ in range(MAX_WORKERS)]
