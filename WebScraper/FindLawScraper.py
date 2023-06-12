@@ -30,18 +30,12 @@ def get_case():
     while len(case_links) > 0:
         link = case_links.pop()
         driver.get(link)
-        # print("got link")
         title = driver.find_element("xpath", TITLE_XPATH).text
-        # print("got title")
         body = driver.find_element("xpath", BODY_XPATH).text
-        # print("got body")
         body_list = body.split("\n")
-        # print("split body")
-        body_list = [line.strip() for line in body_list if " " in line.strip()]
-        # print("stripped body")
+        body_list = ["".join([i if ord(i) < 128 else "" for i in line.strip()]) for line in body_list if " " in line.strip()]
         with open(f"../SupremeCourtCases/{title}.txt", "w") as f:
             f.write("\n".join(body_list[1:]))
-            # print("wrote file")
     driver.quit()
     print(f"finished thread {threading.current_thread().name} for cases {len(case_links)} cases left")
 
@@ -49,7 +43,7 @@ def get_case():
 if __name__ == "__main__":
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--headless")
-    # chrome_options.add_argument("log-level=3")
+    chrome_options.add_argument("log-level=3")
     chrome_options.add_argument("--ignore-certificate-errors")
     chrome_options.add_argument("--ignore-ssl-errors")
     chrome_options.add_argument("--ignore-certificate-errors-spki-list")
