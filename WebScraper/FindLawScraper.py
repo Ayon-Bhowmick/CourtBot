@@ -6,10 +6,20 @@ import os
 import concurrent.futures
 import threading
 import time
+import re
 
 MAX_WORKERS = 50
 TITLE_XPATH = "/html/body/div[2]/section/div[1]/div[3]/div/center/h3[1]/p"
 BODY_XPATH = "/html/body/div[2]/section/div[1]/div[3]/div"
+FOOTNOTE_REGEX = r"^[Ff]ootnote\s{0,}\d{0,}$"
+TEXT_REGEX = r"[\w\d]{1,}"
+
+def line_check(line):
+    line = line.strip()
+    ret = True and (" " in line)
+    ret = ret and not bool(re.search(FOOTNOTE_REGEX, line))
+    ret = ret and bool(re.search(TEXT_REGEX, line))
+    return ret
 
 def get_case_links():
     print(f"starting thread {threading.current_thread().name} for years")
@@ -26,14 +36,13 @@ def get_case_links():
 def get_case():
     print(f"starting thread {threading.current_thread().name} for cases")
     driver = webdriver.Chrome(options=chrome_options)
-    # case_links = ["https://caselaw.findlaw.com/court/us-supreme-court/183/300.html"]
     while len(case_links) > 0:
         link = case_links.pop()
         driver.get(link)
         title = driver.find_element("xpath", TITLE_XPATH).text
         body = driver.find_element("xpath", BODY_XPATH).text
         body_list = body.split("\n")
-        body_list = ["".join([i if ord(i) < 128 else "" for i in line.strip()]) for line in body_list if " " in line.strip()]
+        body_list = ["".join([i if ord(i) < 128 else "" for i in line.strip()]) for line in body_list if line_check(line)]
         with open(f"../SupremeCourtCases/{title}.txt", "w") as f:
             f.write("\n".join(body_list[1:]))
     driver.quit()
