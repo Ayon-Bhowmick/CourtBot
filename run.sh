@@ -4,9 +4,18 @@ s_flag=false
 e_flag=false
 d_flag=false
 
+
 if [ ! -d "SupremeCourtCases" ]; then
     mkdir SupremeCourtCases
 fi
+
+function help() {
+    echo "$(basename $0)"
+    echo "  [-s : to scrape sc decisions]"
+    echo "  [-e : to embed court decisions]"
+    echo "  [-d : to start vector database]"
+    echo "  [-c cases|db : to delete all cases or database]"
+}
 
 while getopts 'sec:' OPTIONS; do
     case "$OPTIONS" in
@@ -24,7 +33,11 @@ while getopts 'sec:' OPTIONS; do
             ;;
         e) e_flag=true ;;
         d) d_flag=true ;;
-        *) error "Unexpected option ${OPTIONS}" ;;
+        :)
+            echo "argument required"
+            help()
+            ;;
+        *) help() ;;
     esac
 done
 
