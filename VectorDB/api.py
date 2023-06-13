@@ -17,5 +17,12 @@ client = chromadb.Client()
 collection = client.get_or_create_collection(name="cases", embedding_function=ef, metadata={"hnsw:space": "cosine"})
 
 @api.get("/query")
-def query(question: str = Body(..., embed=True)):
-    
+async def query(question: str = Body(..., embed=True), num_res: int = Body(..., embed=True)):
+    """
+    gets nearby embedings from question
+    :params: question: question to query
+    :params: num_res: number of responces to return
+    :return: n nearest neighbors to the question
+    """
+    res = collection.query(query_texts=[question], n_results=num_res)
+    return res

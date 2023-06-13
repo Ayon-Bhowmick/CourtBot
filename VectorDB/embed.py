@@ -13,9 +13,9 @@ if __name__ == "__main__":
         with open("../SupremeCourtCases/" + case, "r") as f:
             case_name = case[:-4]
             text = f.read().split("\n")
-            lines = len(text)
-            metadata = [{"case": case_name, "paragraph": i} for i in range(lines)]
-            ids = [f"{case_name}_{i}" for i in range(lines)]
+            num_lines = len(text)
+            metadata = [{"case": case_name, "paragraph": i} for i in range(num_lines)]
+            ids = [f"{case_name}_{i}" for i in range(num_lines)]
         collection.add(documents=text, ids=ids, metadatas=metadata)
         print(f"Added {case_name} to collection")
 
