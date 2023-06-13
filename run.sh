@@ -26,7 +26,7 @@ while getopts 'sec:' OPTIONS; do
                 rm -rf SupremeCourtCases
             elif [ $OPTARG == "db" ]; then
                 echo "removing embeddings"
-                rm -rf VectorDB/.chroma
+                rm -rf Backend/.chroma
             else
                 error "Unexpected option ${OPTIONS}"
             fi
@@ -50,13 +50,13 @@ fi
 
 if $e_flag; then
     echo "Embedding cases"
-    cd VectorDB
-    python -u embed.py > embed.log
+    cd Backend
+    python -u VectorDB.py > embed.log
 fi
 
 if $d_flag; then
     echo "Starting database"
-    cd VectorDB
-    uvicorn api:api --reload
+    cd Backend
+    uvicorn API:api --reload
     cd ..
 fi
