@@ -11,7 +11,11 @@ class Conversation:
         gets the duration of the conversation in a format which can be passed as context
         :return: conversation as a str
         """
-        
+        ret = ""
+        for chat in self.conversation:
+            ret += f" user: {chat['user']} "
+            ret += f" CourtBot: {chat['bot']} "
+        return ret
     
     def ask(self, question: str, context: str):
         """
@@ -20,6 +24,7 @@ class Conversation:
         :params: context: context from database
         :return: responce from bot
         """
+        context = f"{self.get_conversation()} referance material:{context}"
         input = {"question": question, "context": context}
         res = self.BOT(input)
         return res
