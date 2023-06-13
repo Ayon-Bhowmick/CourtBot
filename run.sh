@@ -1,18 +1,27 @@
 #!/bin/bash
 
 s_flag=false
+e_flag=false
 
 if [ ! -d "SupremeCourtCases" ]; then
     mkdir SupremeCourtCases
 fi
 
-while getopts 'sc' OPTIONS; do
+while getopts 'sec:' OPTIONS; do
     case "$OPTIONS" in
         s) s_flag=true ;;
         c)
-            echo "Cleaning Supreme Court Cases"
-            rm -rf SupremeCourtCases
+            if [ $OPTARG == "cases" ]; then
+                echo "removing cases"
+                rm -rf SupremeCourtCases
+            elif [ $OPTARG == "db" ]; then
+                echo "removing embeddings"
+                rm -rf VectorDB/.chroma
+            else
+                error "Unexpected option ${OPTIONS}"
+            fi
             ;;
+        e) e_flag=true ;;
         *) error "Unexpected option ${OPTIONS}" ;;
     esac
 done
@@ -22,4 +31,10 @@ if $s_flag; then
     cd WebScraper
     python -u FindLawScraper.py > FindLawScraper.log
     cd ..
+fi
+
+if $e_flag; then
+    echo "Embedding cases"
+    cd VectorDB
+    python -u embed.py > embed.log
 fi
