@@ -40,5 +40,6 @@ if __name__ == "__main__":
 
     # test
     print()
-    print(collection.query(query_texts=["Alcohol"], n_results=10))
     print(collection.query(query_texts=["Segregation"], n_results=10))
+    print(collection.query(query_texts=["Alcohol"], n_results=10))
+    print(collection.query(query_texts=["Tell me about the supreme court's opinions on segregation"], n_results=10))

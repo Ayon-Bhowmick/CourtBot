@@ -24,8 +24,8 @@ class Conversation:
         :params: context: context from database
         :return: responce from bot
         """
-        context = f"{self.get_conversation()} referance material:{context}"
-        input = {"question": question, "context": context}
+        full_context = f"Conversation so far: {self.get_conversation()} referance material:{context}"
+        input = {"question": question, "context": full_context}
         res = self.BOT(input)
         self.conversation.append({"user": question, "CourtBot": res})
         return res
