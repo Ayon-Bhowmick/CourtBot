@@ -2,6 +2,7 @@ import chromadb
 from chromadb.utils import embedding_functions
 import os
 
+MIN_LENGTH = 16
 # make collection
 ef = embedding_functions.InstructorEmbeddingFunction(model_name="hkunlp/instructor-large", device="cuda")
 client = chromadb.Client()
@@ -31,7 +32,7 @@ if __name__ == "__main__":
     for case in os.listdir("../SupremeCourtCases"):
         with open("../SupremeCourtCases/" + case, "r") as f:
             case_name = case[:-4]
-            text = f.read().split("\n")
+            text = [line for line in f.read().split("\n") if len(line) >= MIN_LENGTH]
             num_lines = len(text)
             metadata = [{"case": case_name, "paragraph": i} for i in range(num_lines)]
             ids = [f"{case_name}_{i}" for i in range(num_lines)]
