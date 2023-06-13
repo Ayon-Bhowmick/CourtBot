@@ -4,6 +4,7 @@ import chromadb
 from chromadb.utils import embedding_functions
 
 api = FastAPI()
+# set cors
 api.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -12,6 +13,7 @@ api.add_middleware(
     allow_headers=["*"],
 )
 
+# connect db
 ef = embedding_functions.InstructorEmbeddingFunction(model_name="hkunlp/instructor-large", device="cuda")
 client = chromadb.Client()
 collection = client.get_or_create_collection(name="cases", embedding_function=ef, metadata={"hnsw:space": "cosine"})

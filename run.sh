@@ -2,6 +2,7 @@
 
 s_flag=false
 e_flag=false
+d_flag=false
 
 if [ ! -d "SupremeCourtCases" ]; then
     mkdir SupremeCourtCases
@@ -22,6 +23,7 @@ while getopts 'sec:' OPTIONS; do
             fi
             ;;
         e) e_flag=true ;;
+        d) d_flag=true ;;
         *) error "Unexpected option ${OPTIONS}" ;;
     esac
 done
@@ -37,4 +39,11 @@ if $e_flag; then
     echo "Embedding cases"
     cd VectorDB
     python -u embed.py > embed.log
+fi
+
+if $d_flag; then
+    echo "Starting database"
+    cd VectorDB
+    uvicorn api:api --reload
+    cd ..
 fi
