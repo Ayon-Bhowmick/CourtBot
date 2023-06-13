@@ -27,4 +27,5 @@ class Conversation:
         context = f"{self.get_conversation()} referance material:{context}"
         input = {"question": question, "context": context}
         res = self.BOT(input)
+        self.conversation.append({"user": question, "CourtBot": res})
         return res
