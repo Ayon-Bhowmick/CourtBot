@@ -17,7 +17,7 @@ function help() {
     echo "  [-c cases|db : to delete all cases or database]"
 }
 
-while getopts 'sec:' OPTIONS; do
+while getopts ':sec:' OPTIONS; do
     case "$OPTIONS" in
         s) s_flag=true ;;
         c)
@@ -35,9 +35,11 @@ while getopts 'sec:' OPTIONS; do
         d) d_flag=true ;;
         :)
             echo "argument required"
-            help()
+            help
             ;;
-        *) help() ;;
+        ?)
+            help
+            ;;
     esac
 done
 
@@ -51,7 +53,7 @@ fi
 if $e_flag; then
     echo "Embedding cases"
     cd Backend
-    python -u VectorDB.py > embed.log
+    python -u VectorDB.py > VectorDB.log
 fi
 
 if $d_flag; then
