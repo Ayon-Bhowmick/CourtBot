@@ -5,7 +5,7 @@ import threading
 import time
 import re
 
-MAX_WORKERS = 50
+MAX_WORKERS = 500
 MIN_LINE_LENGTH = 16
 TITLE_XPATH = "/html/body/div[2]/section/div[1]/div[3]/div/center/h3[1]/p"
 BODY_XPATH = "/html/body/div[2]/section/div[1]/div[3]/div"
