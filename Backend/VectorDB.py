@@ -38,7 +38,6 @@ if __name__ == "__main__":
             ids = [f"{i}_{j}" for j in range(num_lines)]
         collection.add(documents=text, ids=ids, metadatas=metadata)
         print(f"Added {case_name} to collection")
-    collection
 
     # test
     print()
