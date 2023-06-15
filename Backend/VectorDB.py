@@ -29,15 +29,16 @@ def add(docs: list[str], ids: list[str], metadata: list[dict[str, str]]):
 
 if __name__ == "__main__":
     # add documents
-    for case in os.listdir("../SupremeCourtCases"):
+    for i, case in enumerate(os.listdir("../SupremeCourtCases")):
         with open("../SupremeCourtCases/" + case, "r") as f:
             case_name = case[:-4]
             text = [line for line in f.read().split("\n") if len(line) >= MIN_LENGTH]
             num_lines = len(text)
-            metadata = [{"case": case_name, "paragraph": i} for i in range(num_lines)]
-            ids = [f"{case_name}_{i}" for i in range(num_lines)]
+            metadata = [{"case": case_name, "paragraph": j} for j in range(num_lines)]
+            ids = [f"{i}_{j}" for j in range(num_lines)]
         collection.add(documents=text, ids=ids, metadatas=metadata)
         print(f"Added {case_name} to collection")
+    collection
 
     # test
     print()

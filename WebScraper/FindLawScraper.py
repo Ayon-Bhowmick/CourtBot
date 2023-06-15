@@ -6,6 +6,7 @@ import time
 import re
 
 MAX_WORKERS = 50
+MIN_LINE_LENGTH = 16
 TITLE_XPATH = "/html/body/div[2]/section/div[1]/div[3]/div/center/h3[1]/p"
 BODY_XPATH = "/html/body/div[2]/section/div[1]/div[3]/div"
 FOOTNOTE_REGEX = r"^[Ff]ootnote\s{0,}\d{0,}$"
@@ -16,6 +17,7 @@ def line_check(line):
     ret = True and (" " in line)
     ret = ret and not bool(re.search(FOOTNOTE_REGEX, line))
     ret = ret and bool(re.search(TEXT_REGEX, line))
+    ret = ret and (len(line) > MIN_LINE_LENGTH)
     return ret
 
 def get_case_links():
