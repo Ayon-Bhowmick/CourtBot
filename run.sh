@@ -11,10 +11,10 @@ fi
 
 function help() {
     echo "$(basename $0)"
-    echo "  [-s : to scrape sc decisions]"
-    echo "  [-e : to embed court decisions]"
-    echo "  [-d : to start vector database]"
-    echo "  [-c cases|db : to delete all cases or database]"
+    echo "  [-s : scrape the supreme court cases]"
+    echo "  [-e : embed court decisions]"
+    echo "  [-d : start backend]"
+    echo "  [-c cases|db : delete all cases or database]"
 }
 
 while getopts ':sec:' OPTIONS; do

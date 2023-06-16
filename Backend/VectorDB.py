@@ -1,9 +1,10 @@
 import chromadb
 from chromadb.utils import embedding_functions
 import os
+import time
 
 # make collection
-ef = embedding_functions.InstructorEmbeddingFunction(model_name="hkunlp/instructor-large", device="cuda")
+ef = embedding_functions.InstructorEmbeddingFunction(model_name="hku-nlp/instructor-base", device="cuda") # https://huggingface.co/hku-nlp/instructor-base
 client = chromadb.Client()
 collection = client.get_or_create_collection(name="cases", embedding_function=ef, metadata={"hnsw:space": "cosine"})
 
@@ -27,6 +28,7 @@ def add(docs: list[str], ids: list[str], metadata: list[dict[str, str]]):
     collection.add(documents=docs, ids=ids, metadatas=metadata)
 
 if __name__ == "__main__":
+    start = time.time()
     # add documents
     for i, case in enumerate(os.listdir("../SupremeCourtCases")):
         with open("../SupremeCourtCases/" + case, "r") as f:
@@ -37,6 +39,13 @@ if __name__ == "__main__":
             ids = [f"{i}_{j}" for j in range(num_lines)]
         collection.add(documents=text, ids=ids, metadatas=metadata)
         print(f"Added {case_name} to collection")
+        
+    seconds = time.time() - start
+    minutes = seconds // 60
+    seconds = seconds - minutes * 60
+    hours = minutes // 60
+    minutes = minutes - hours * 60
+    print(f"Total time: {int(hours)}:{int(minutes)}:{seconds}")
 
     # test
     print()
