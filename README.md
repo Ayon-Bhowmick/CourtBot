@@ -27,4 +27,5 @@ pip install -r requirements.txt
 ## Sources
 
 - The data for the Supreme Court cases is scraped from [FindLaw](https://caselaw.findlaw.com/court/us-supreme-court) using Selenium.
-- The embeddings are calculated using [instructor-base](https://huggingface.co/hku-nlp/instructor-base) by the NLP Group of The University of Hong Kong. This is an implementation of T5 which was presented in [Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer](https://arxiv.org/abs/1910.10683) by Colin Raffel et al.
+- The embeddings are calculated using [instructor-base](https://huggingface.co/hku-nlp/instructor-base) by the NLP Group of The University of Hong Kong. This is an implementation of a Text-to-Text Transfer Transformer (T5) which was presented in [Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer](https://arxiv.org/abs/1910.10683) by Colin Raffel et al.
+- The vector database used is [Chroma](https://www.trychroma.com/). Chroma is a vector database which allows you to search for similar vectors. It is built on top of DuckDB and Apache Parquet.
