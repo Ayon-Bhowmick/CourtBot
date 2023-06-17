@@ -1,11 +1,12 @@
 import chromadb
 from chromadb.utils import embedding_functions
+from chromadb.config import Settings
 import os
 import time
 
 # make collection
 ef = embedding_functions.InstructorEmbeddingFunction(model_name="hku-nlp/instructor-base", device="cuda") # https://huggingface.co/hku-nlp/instructor-base
-client = chromadb.Client()
+client = chromadb.Client(Settings(chroma_db_impl="duckdb+parquet", persist_directory="./chromadb"))
 collection = client.get_or_create_collection(name="cases", embedding_function=ef, metadata={"hnsw:space": "cosine"})
 
 def query(question: str, n: int):
@@ -37,9 +38,14 @@ if __name__ == "__main__":
             num_lines = len(text)
             metadata = [{"case": case_name, "paragraph": j} for j in range(num_lines)]
             ids = [f"{i}_{j}" for j in range(num_lines)]
-        collection.add(documents=text, ids=ids, metadatas=metadata)
+        try:
+            collection.add(documents=text, ids=ids, metadatas=metadata)
+        except chromadb.errors.IDAlreadyExistsError as IDerror:
+            continue
         print(f"Added {case_name} to collection")
-        
+        if i == 100:
+            break
+
     seconds = time.time() - start
     minutes = seconds // 60
     seconds = seconds - minutes * 60

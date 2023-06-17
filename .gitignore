@@ -2,3 +2,5 @@ SupremeCourtCases/*.txt
 *.log
 .env
 .chroma/
+chromadb/
+__pycache__/

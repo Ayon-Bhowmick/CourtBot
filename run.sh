@@ -17,7 +17,7 @@ function help() {
     echo "  [-c cases|db : delete all cases or database]"
 }
 
-while getopts ':sec:' OPTIONS; do
+while getopts ':sec:d' OPTIONS; do
     case "$OPTIONS" in
         s) s_flag=true ;;
         c)

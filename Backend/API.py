@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Response, Query, Body, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 import VectorDB
 from ChatBot import Conversation
 
@@ -13,6 +14,11 @@ api.add_middleware(
     allow_headers=["*"],
 )
 convo = Conversation()
+
+class QueryBody(BaseModel):
+    question: str
+    num_res: int
+
 
 @api.get("/query")
 async def query(question: str = Body(..., embed=True), num_res: int = Body(..., embed=True)):
