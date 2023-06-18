@@ -5,7 +5,7 @@ import os
 import time
 
 # make collection
-ef = embedding_functions.InstructorEmbeddingFunction(model_name="hku-nlp/instructor-base", device="cuda") # https://huggingface.co/hku-nlp/instructor-base
+ef = embedding_functions.InstructorEmbeddingFunction(model_name="sentence-transformers/all-mpnet-base-v2", device="cuda") # https://huggingface.co/sentence-transformers/all-mpnet-base-v2
 client = chromadb.Client(Settings(chroma_db_impl="duckdb+parquet", persist_directory="./chromadb"))
 collection = client.get_or_create_collection(name="cases", embedding_function=ef, metadata={"hnsw:space": "cosine"})
 
