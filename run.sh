@@ -57,7 +57,7 @@ if $e_flag; then
 fi
 
 if $d_flag; then
-    echo "Starting database"
+    echo "Starting backend"
     cd Backend
     uvicorn API:api --reload
     cd ..

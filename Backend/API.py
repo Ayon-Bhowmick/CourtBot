@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import VectorDB
 from ChatBot import Conversation
+import json
 
 api = FastAPI()
 # set cors
@@ -45,5 +46,5 @@ async def ask(question: str = Body(..., embed=True)):
     :return: chat bot's responce
     """
     context = VectorDB.query(question, 10)
-    res = convo.ask(question, context)
+    res = convo.ask(question, context["documents"])
     return res

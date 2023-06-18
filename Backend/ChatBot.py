@@ -16,7 +16,7 @@ class Conversation:
             ret += f" user: {chat['user']} "
             ret += f" CourtBot: {chat['bot']} "
         return ret
-    
+
     def ask(self, question: str, context: str):
         """
         gets the bot's responce given a question and context
