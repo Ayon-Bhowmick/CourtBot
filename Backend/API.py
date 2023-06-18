@@ -45,6 +45,6 @@ async def ask(question: str = Body(..., embed=True)):
     :params: question: user inputer question
     :return: chat bot's responce
     """
-    context = VectorDB.query(question, 10)
+    context = json.loads(VectorDB.query(question, 10))
     res = convo.ask(question, context["documents"])
     return res

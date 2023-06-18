@@ -26,7 +26,7 @@ while getopts ':sec:d' OPTIONS; do
                 rm -rf SupremeCourtCases
             elif [ $OPTARG == "db" ]; then
                 echo "removing embeddings"
-                rm -rf Backend/.chroma
+                rm -rf Backend/chromadb
             else
                 error "Unexpected option ${OPTIONS}"
             fi
