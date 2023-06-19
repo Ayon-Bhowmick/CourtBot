@@ -12,12 +12,12 @@ BODY_XPATH = "/html/body/div[2]/section/div[1]/div[3]/div"
 FOOTNOTE_REGEX = r"^[Ff]ootnote\s{0,}\d{0,}$"
 TEXT_REGEX = r"[\w\d]{1,}"
 
-def line_check(line: str):
+def line_check(line: str) -> bool:
     line = line.strip()
     ret = True and (" " in line)
     ret = ret and not bool(re.search(FOOTNOTE_REGEX, line))
     ret = ret and bool(re.search(TEXT_REGEX, line))
-    ret = ret and (len(line.split()) > MIN_LINE_LENGTH)
+    ret = ret and (len(line.split()) >= MIN_LINE_LENGTH)
     return ret
 
 def get_case_links():
