@@ -26,7 +26,11 @@ def add(docs: list[str], ids: list[str], metadata: list[dict[str, str]]):
     :params: ids: ids conisponding to the docs
     :params: metadata: metadata for the docs
     """
-    collection.add(documents=docs, ids=ids, metadatas=metadata)
+    try:
+        collection.add(documents=docs, ids=ids, metadatas=metadata)
+        return 0
+    except Exception as e:
+        raise e
 
 if __name__ == "__main__":
     start = time.time()
@@ -40,11 +44,10 @@ if __name__ == "__main__":
             ids = [f"{i}_{j}" for j in range(num_lines)]
         try:
             collection.add(documents=text, ids=ids, metadatas=metadata)
+            print(f"Added {case_name} to collection")
         except chromadb.errors.IDAlreadyExistsError as IDerror:
+            print(f"{case_name} already in collection")
             continue
-        print(f"Added {case_name} to collection")
-        if i == 100:
-            break
 
     seconds = time.time() - start
     minutes = seconds // 60
@@ -52,9 +55,3 @@ if __name__ == "__main__":
     hours = minutes // 60
     minutes = minutes - hours * 60
     print(f"Total time: {int(hours)}:{int(minutes)}:{seconds}")
-
-    # test
-    print()
-    print(collection.query(query_texts=["Segregation"], n_results=10))
-    print(collection.query(query_texts=["Alcohol"], n_results=10))
-    print(collection.query(query_texts=["Tell me about the supreme court's opinions on segregation"], n_results=10))
