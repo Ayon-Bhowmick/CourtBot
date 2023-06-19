@@ -2,7 +2,7 @@ from fastapi import FastAPI, Response, Query, Body, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import VectorDB
-from ChatBot import Conversation
+from ChatBot2 import Conversation
 import json
 
 api = FastAPI()
