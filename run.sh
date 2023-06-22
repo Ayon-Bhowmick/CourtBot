@@ -21,16 +21,16 @@ while getopts ':sec:d' OPTIONS; do
     case "$OPTIONS" in
         s) s_flag=true ;;
         c)
-            if [ $OPTARG == "cases" ]; then
-                echo "removing cases"
-                rm -rf SupremeCourtCases
-            elif [ $OPTARG == "db" ]; then
-                echo "removing embeddings"
-                rm -rf Backend/chromadb
-            else
-                error "Unexpected option ${OPTIONS}"
-            fi
-            ;;
+                if [ $OPTARG == "cases" ]; then
+                    echo "removing cases"
+                    rm -rf SupremeCourtCases
+                elif [ $OPTARG == "db" ]; then
+                    echo "removing embeddings"
+                    rm -rf Backend/chromadb
+                else
+                    error "Unexpected option ${OPTIONS}"
+                fi
+                ;;
         e) e_flag=true ;;
         d) d_flag=true ;;
         :)
